@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Evento.Domain\Evento.Domain.csproj" />
+    <ProjectReference Include="..\Evento.Repository\Evento.Repository.csproj" />
+  </ItemGroup>
+
+</Project>
