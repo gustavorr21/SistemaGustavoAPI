@@ -1,4 +1,7 @@
-using Evento.Repository;
+using Sistema.Application.Application.Evento;
+using Sistema.Repository.Data;
+using Sistema.Repository.Repositorys.Evento;
+using Sistema.Repository.Repositorys.Geral;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,9 +35,15 @@ namespace SistemaGustavoAPI
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddScoped<IEventoService, EventoService>();
+            services.AddScoped<IGeralRepository, GeralRepository>();
+            services.AddScoped<IEventosRepository, EventoRepository>();
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                    .AddNewtonsoftJson(x=>x.SerializerSettings.ReferenceLoopHandling =
+                    Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

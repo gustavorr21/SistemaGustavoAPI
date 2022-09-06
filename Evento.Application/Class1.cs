@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Evento.Application
+namespace Sistema.Application
 {
     public class Class1
     {

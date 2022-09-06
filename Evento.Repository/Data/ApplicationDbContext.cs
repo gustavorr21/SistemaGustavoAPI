@@ -1,8 +1,8 @@
-﻿using Evento.Domain.Models;
+﻿using Sistema.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Evento.Repository
+namespace Sistema.Repository.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
@@ -20,6 +20,16 @@ namespace Evento.Repository
         {
             modelBuilder.Entity<PalestranteEventoViewModel>()
                         .HasKey(pe => new { pe.EventoId, pe.PalestranteId });
+
+            modelBuilder.Entity<EventoViewModel>()
+                .HasMany(e => e.RedesSociais)
+                .WithOne(rs => rs.Evento)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PalestranteViewModel>()
+                .HasMany(e => e.RedesSociais)
+                .WithOne(rs => rs.Palestrante)
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }

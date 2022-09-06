@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Evento.Domain.Models
+namespace Sistema.Domain.Models
 {
     public class RedeSocialViewModel
     {

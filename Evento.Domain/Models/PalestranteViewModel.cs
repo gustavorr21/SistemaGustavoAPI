@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Evento.Domain.Models
+namespace Sistema.Domain.Models
 {
     public class PalestranteViewModel
     {
@@ -15,5 +15,6 @@ namespace Evento.Domain.Models
         public string Telefone { get; set; }
         public string Email { get; set; }
         public IEnumerable<RedeSocialViewModel> RedesSociais { get; set; }
+        public IEnumerable<PalestranteEventoViewModel> PalestrantesEventos { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Evento.Repository.Migrations
+namespace Sistema.Repository.Migrations
 {
     public partial class initialMigration : Migration
     {
@@ -50,7 +50,8 @@ namespace Evento.Repository.Migrations
                 name: "Eventos",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Local = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DataEvento = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Tema = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -198,18 +199,17 @@ namespace Evento.Repository.Migrations
                     DataInicio = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DataFim = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Quantidade = table.Column<int>(type: "int", nullable: false),
-                    EventoId = table.Column<int>(type: "int", nullable: false),
-                    EventoId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    EventoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Lotes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lotes_Eventos_EventoId1",
-                        column: x => x.EventoId1,
+                        name: "FK_Lotes_Eventos_EventoId",
+                        column: x => x.EventoId,
                         principalTable: "Eventos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -217,18 +217,17 @@ namespace Evento.Repository.Migrations
                 columns: table => new
                 {
                     PalestranteId = table.Column<int>(type: "int", nullable: false),
-                    EventoId = table.Column<int>(type: "int", nullable: false),
-                    EventoId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    EventoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PalestrantesEventos", x => new { x.EventoId, x.PalestranteId });
                     table.ForeignKey(
-                        name: "FK_PalestrantesEventos_Eventos_EventoId1",
-                        column: x => x.EventoId1,
+                        name: "FK_PalestrantesEventos_Eventos_EventoId",
+                        column: x => x.EventoId,
                         principalTable: "Eventos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PalestrantesEventos_Palestrantes_PalestranteId",
                         column: x => x.PalestranteId,
@@ -246,15 +245,14 @@ namespace Evento.Repository.Migrations
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     URL = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EventoId = table.Column<int>(type: "int", nullable: true),
-                    EventoId1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     PalestranteId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RedesSociais", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RedesSociais_Eventos_EventoId1",
-                        column: x => x.EventoId1,
+                        name: "FK_RedesSociais_Eventos_EventoId",
+                        column: x => x.EventoId,
                         principalTable: "Eventos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -306,14 +304,9 @@ namespace Evento.Repository.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lotes_EventoId1",
+                name: "IX_Lotes_EventoId",
                 table: "Lotes",
-                column: "EventoId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PalestrantesEventos_EventoId1",
-                table: "PalestrantesEventos",
-                column: "EventoId1");
+                column: "EventoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PalestrantesEventos_PalestranteId",
@@ -321,9 +314,9 @@ namespace Evento.Repository.Migrations
                 column: "PalestranteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RedesSociais_EventoId1",
+                name: "IX_RedesSociais_EventoId",
                 table: "RedesSociais",
-                column: "EventoId1");
+                column: "EventoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RedesSociais_PalestranteId",

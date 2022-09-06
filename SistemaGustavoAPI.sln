@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaGustavoAPI", "SistemaGustavoAPI\SistemaGustavoAPI.csproj", "{AA46BB3B-C24D-42FB-A3D2-6E409843988B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SistemaGustavoAPI", "SistemaGustavoAPI\SistemaGustavoAPI.csproj", "{AA46BB3B-C24D-42FB-A3D2-6E409843988B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evento.Repository", "Evento.Repository\Evento.Repository.csproj", "{83961EA3-B5FB-43AF-B5C9-F6EB6A4D6160}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sistema.Repository", "Evento.Repository\Sistema.Repository.csproj", "{83961EA3-B5FB-43AF-B5C9-F6EB6A4D6160}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evento.Domain", "Evento.Domain\Evento.Domain.csproj", "{123CAD17-9103-49BC-BBBC-C0A661725E84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sistema.Domain", "Evento.Domain\Sistema.Domain.csproj", "{123CAD17-9103-49BC-BBBC-C0A661725E84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evento.Application", "Evento.Application\Evento.Application.csproj", "{D6C251A6-FA3A-41A1-A360-CC1703F20DDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sistema.Application", "Evento.Application\Sistema.Application.csproj", "{D6C251A6-FA3A-41A1-A360-CC1703F20DDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

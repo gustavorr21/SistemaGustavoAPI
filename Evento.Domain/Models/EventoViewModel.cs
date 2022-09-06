@@ -2,11 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Evento.Domain.Models
+namespace Sistema.Domain.Models
 {
     public class EventoViewModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Local { get; set; }
         public DateTime? DataEvento { get; set; }
         public string Tema { get; set; }
