@@ -1,4 +1,5 @@
-﻿using Sistema.Domain.Models;
+﻿
+using Sistema.Domain.Models;
 using Sistema.Repository.Repositorys.Evento;
 using Sistema.Repository.Repositorys.Geral;
 using System;
@@ -70,7 +71,7 @@ namespace Sistema.Application.Application.Evento
                 var evento = await _eventoRepository.GetAllEventosAsync();
                 if (evento == null) return null;
 
-                return evento;
+                return (ICollection<EventoViewModel>)evento;
             }
             catch (Exception ex)
             {

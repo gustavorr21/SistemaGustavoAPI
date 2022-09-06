@@ -17,6 +17,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Evento.Application\Sistema.Application.csproj" />
+    <ProjectReference Include="..\Sistema.Application\Sistema.Application.csproj" />
+    <ProjectReference Include="..\Sistema.Domain\Sistema.Domain.csproj" />
+    <ProjectReference Include="..\Sistema.Repository\Sistema.Repository.csproj" />
   </ItemGroup>
 
 </Project>

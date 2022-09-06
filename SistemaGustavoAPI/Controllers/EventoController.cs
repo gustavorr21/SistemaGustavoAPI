@@ -1,7 +1,6 @@
 ﻿using Sistema.Application.Application.Evento;
 using Sistema.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Sistema.Domain.Models;
 using System;
 using System.Threading.Tasks;
 
