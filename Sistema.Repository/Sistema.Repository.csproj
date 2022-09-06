@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Evento.Domain\Sistema.Domain.csproj" />
     <ProjectReference Include="..\Sistema.Domain\Sistema.Domain.csproj" />
   </ItemGroup>
 

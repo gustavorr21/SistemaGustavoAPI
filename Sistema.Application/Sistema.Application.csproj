@@ -5,8 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Evento.Domain\Sistema.Domain.csproj" />
-    <ProjectReference Include="..\Evento.Repository\Sistema.Repository.csproj" />
     <ProjectReference Include="..\Sistema.Domain\Sistema.Domain.csproj" />
     <ProjectReference Include="..\Sistema.Repository\Sistema.Repository.csproj" />
   </ItemGroup>
