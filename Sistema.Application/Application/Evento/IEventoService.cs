@@ -1,4 +1,9 @@
-﻿using Sistema.Domain.Models;
+﻿using Linx.Infra.Crosscutting;
+using Linx.Infra.Crosscutting.Requests;
+using Sistema.Application.ApplicationDTO.Dtos;
+using Sistema.Application.ApplicationDTO.Requests;
+using Sistema.Application.ApplicationDTO.Result;
+using Sistema.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +14,12 @@ namespace Sistema.Application.Application.Evento
 {
     public interface IEventoService
     {
-        Task<EventoViewModel> AddEvento(EventoViewModel evento);
-        Task<EventoViewModel> UpdateEvento(int Id, EventoViewModel evento);
-        Task<bool> DeleteEvento(int Id);
-        Task<ICollection<EventoViewModel>> GetEventosByFilterAsync(string tema);
-        Task<ICollection<EventoViewModel>> GetAllEventosAsync();
-        Task<EventoViewModel> GetAllEventosByIdAsync(int Id);
+        Task<SalvarEventoResult> AddEvento(CriarEventoRequest evento);
+        Task<SalvarEventoResult> UpdateEvento(int Id, AtualizarEventoRequest evento);
+        Task<ExcluirEventoResult> DeleteEvento(int Id);
+        Task<IEnumerable<EventoDto>> GetEventosByFilterAsync(string tema);
+        Task<IEnumerable<EventoDto>> GetAllEventosAsync();
+        Task<EventoDto> GetAllEventosByIdAsync(int Id);
+        Task<IPagedCollection<EventoDto>> PesquisarEvento(PesquisarEventoFilterRequest filtro, PaginationRequest pagination);
     }
 }

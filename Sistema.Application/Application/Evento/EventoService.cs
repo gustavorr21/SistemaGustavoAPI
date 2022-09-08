@@ -1,4 +1,9 @@
-﻿
+﻿using Linx.Infra.Crosscutting;
+using Linx.Infra.Crosscutting.Exceptions;
+using Linx.Infra.Crosscutting.Requests;
+using Sistema.Application.ApplicationDTO.Dtos;
+using Sistema.Application.ApplicationDTO.Requests;
+using Sistema.Application.ApplicationDTO.Result;
 using Sistema.Domain.Models;
 using Sistema.Repository.Repositorys.Evento;
 using Sistema.Repository.Repositorys.Geral;
@@ -14,79 +19,69 @@ namespace Sistema.Application.Application.Evento
     {
         private readonly IGeralRepository _geralRepository;
         private readonly IEventosRepository _eventoRepository;
+        //private readonly IEventoQueryRepository _eventoQueryRepository;
         public EventoService(IGeralRepository geralRepository, IEventosRepository eventoRepository)
         {
             _geralRepository = geralRepository;
             _eventoRepository = eventoRepository;
         }
-        public Task<EventoViewModel> AddEvento(EventoViewModel evento)
+        public async Task<SalvarEventoResult> AddEvento(CriarEventoRequest evento)
         {
             try
             {
-                _geralRepository.Add<EventoViewModel>(evento);
-                return null;
+                var newEvento = new EventoOcorrido(evento.Evento.Local,
+                                              evento.Evento.Tema,
+                                              evento.Evento.QtdPessoas,
+                                              evento.Evento.ImagemUrl,
+                                              evento.Evento.Telefone,
+                                              evento.Evento.Email);
+                newEvento.AtualizarDataEvento(DateTime.Now);
+
+                _geralRepository.Add<EventoOcorrido>(newEvento);
+
+                return new SalvarEventoResult((EventoDto)newEvento);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<EventoViewModel> UpdateEvento(int Id, EventoViewModel evento)
+        public async Task<SalvarEventoResult> UpdateEvento(int id, AtualizarEventoRequest request)
         {
             try
             {
-                var eventUp = await _eventoRepository.GetAllEventosByIdAsync(Id);
-                if (eventUp == null) return null;
+                EventoOcorrido eventUp = await _eventoRepository.GetAllEventosByIdAsync(id)
+                    ?? throw new ObjectNotFoundException("Evento não encontrado!");
 
-                evento.Id = eventUp.Id;
+                eventUp.AtualizarDataEvento(request.Evento.DataEvento);
+                eventUp.AtualizarLocal(request.Evento.Local);
+                eventUp.AtualizarEmail(request.Evento.Email);
+                eventUp.AtualizarImagemUrl(request.Evento.ImagemUrl);
+                eventUp.AtualizarQtdPessoas(request.Evento.QtdPessoas);
+                eventUp.AtualizarTelefone(request.Evento.Telefone);
+                eventUp.AtualizarTema(request.Evento.Tema);
 
-                _geralRepository.Update<EventoViewModel>(evento);
-                return evento;
+
+                _geralRepository.Update<EventoOcorrido>(eventUp);
+
+                return new SalvarEventoResult((EventoDto)eventUp);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public async Task<bool> DeleteEvento(int Id)
+        public async Task<ExcluirEventoResult> DeleteEvento(int id)
         {
             try
             {
-                var evento = await _eventoRepository.GetAllEventosByIdAsync(Id);
-                if (evento == null) throw new Exception("Evento não encontrado");
+                EventoOcorrido evento = await _eventoRepository.GetAllEventosByIdAsync(id)
+                    ?? throw new ObjectNotFoundException("Evento não encontrado!");
 
-                _geralRepository.Delete<EventoViewModel>(evento);
-                return await _geralRepository.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+                _geralRepository.Delete<EventoOcorrido>(evento);
+                await _geralRepository.SaveChangesAsync();
 
-        public async Task<ICollection<EventoViewModel>> GetAllEventosAsync()
-        {
-            try
-            {
-                var evento = await _eventoRepository.GetAllEventosAsync();
-                if (evento == null) return null;
-
-                return (ICollection<EventoViewModel>)evento;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<EventoViewModel> GetAllEventosByIdAsync(int Id)
-        {
-            try
-            {
-                var evento = await _eventoRepository.GetAllEventosByIdAsync(Id);
-                if (evento == null) return null;
-
-                return evento;
+                return new ExcluirEventoResult();
             }
             catch (Exception ex)
             {
@@ -94,19 +89,58 @@ namespace Sistema.Application.Application.Evento
             }
         }
 
-        public async Task<ICollection<EventoViewModel>> GetEventosByFilterAsync(string tema)
+        public async Task<IEnumerable<EventoDto>> GetAllEventosAsync()
+        {
+            try
+            {
+                IEnumerable<EventoOcorrido> evento = await _eventoRepository.GetAllEventosAsync();
+
+                return evento?.Select(eq => (EventoDto)eq);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<EventoDto> GetAllEventosByIdAsync(int Id)
+        {
+            try
+            {
+                return await _eventoRepository.GetAllEventosByIdAsync(Id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<EventoDto>> GetEventosByFilterAsync(string tema)
         {
             try
             {
                 var evento = await _eventoRepository.GetEventosByFilterAsync(tema);
                 if (evento == null) return null;
 
-                return evento;
+                return evento?.Select(eq => (EventoDto)eq);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<IPagedCollection<EventoDto>> PesquisarEvento(
+         PesquisarEventoFilterRequest filtro,
+         PaginationRequest pagination)
+        {
+            return null;
+            //return await _eventoRepository.FindAsync(
+            //    filtro.Descricao,
+            //    filtro.Modelo,
+            //    filtro.TipoId,
+            //    pagination.ToPagination());
+        }
+
     }
 }

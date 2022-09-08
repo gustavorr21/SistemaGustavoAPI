@@ -9,8 +9,8 @@ namespace Sistema.Repository.Repositorys.Palestrante
 {
     public interface IPalestranteRepository
     {
-        Task<ICollection<PalestranteViewModel>> GetPalestranteByFilterAsync(string tema);
-        Task<ICollection<PalestranteViewModel>> GetAllPalestranteAsync();
-        Task<PalestranteViewModel> GetAllPalestranteByIdAsync(int Id);
+        Task<ICollection<Domain.Models.Palestrante>> GetPalestranteByFilterAsync(string tema);
+        Task<ICollection<Domain.Models.Palestrante>> GetAllPalestranteAsync();
+        Task<Domain.Models.Palestrante> GetAllPalestranteByIdAsync(int Id);
     }
 }

@@ -10,23 +10,23 @@ namespace Sistema.Repository.Data
             : base(options)
         {
         }
-        public DbSet<EventoViewModel> Eventos { get; set; }
-        public DbSet<LoteViewModel> Lotes { get; set; }
-        public DbSet<PalestranteViewModel> Palestrantes { get; set; }
-        public DbSet<PalestranteEventoViewModel> PalestrantesEventos { get; set; }
-        public DbSet<RedeSocialViewModel> RedesSociais { get; set; }
+        public DbSet<EventoOcorrido> Eventos { get; set; }
+        public DbSet<Lote> Lotes { get; set; }
+        public DbSet<Palestrante> Palestrantes { get; set; }
+        public DbSet<PalestranteEvento> PalestrantesEventos { get; set; }
+        public DbSet<RedeSocial> RedesSociais { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PalestranteEventoViewModel>()
+            modelBuilder.Entity<PalestranteEvento>()
                         .HasKey(pe => new { pe.EventoId, pe.PalestranteId });
 
-            modelBuilder.Entity<EventoViewModel>()
+            modelBuilder.Entity<EventoOcorrido>()
                 .HasMany(e => e.RedesSociais)
                 .WithOne(rs => rs.Evento)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<PalestranteViewModel>()
+            modelBuilder.Entity<Palestrante>()
                 .HasMany(e => e.RedesSociais)
                 .WithOne(rs => rs.Palestrante)
                 .OnDelete(DeleteBehavior.Cascade);

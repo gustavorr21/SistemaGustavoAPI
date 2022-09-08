@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sistema.Domain\Sistema.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Tino\PORTAL_MOBILIDADE\API_PORTAL\src\PortalMobilidade.Seedwork\Application.Seedwork\Application.Seedwork.csproj" />
     <ProjectReference Include="..\Sistema.Repository\Sistema.Repository.csproj" />
   </ItemGroup>
 

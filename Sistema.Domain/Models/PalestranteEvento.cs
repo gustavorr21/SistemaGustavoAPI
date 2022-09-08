@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Sistema.Domain.Models
 {
-    public class PalestranteEventoViewModel
+    public class PalestranteEvento
     {
         public int PalestranteId { get; set; }
-        public PalestranteViewModel Palestrante { get; set; }
+        public Palestrante Palestrante { get; set; }
         public int EventoId { get; set; }
-        public EventoViewModel Evento { get; set; }
+        public EventoOcorrido Evento { get; set; }
     }
 }

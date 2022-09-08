@@ -11,6 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Tino\PORTAL_MOBILIDADE\API_PORTAL\src\PortalMobilidade.Seedwork\Domain.Seedwork\Domain.Seedwork.csproj" />
+    <ProjectReference Include="..\..\..\Tino\PORTAL_MOBILIDADE\API_PORTAL\src\PortalMobilidade.Seedwork\Infra.Data.Query.Seedwork\Infra.Data.Query.Seedwork.csproj" />
+    <ProjectReference Include="..\..\..\Tino\PORTAL_MOBILIDADE\API_PORTAL\src\PortalMobilidade.Seedwork\Infra.Data.Seedwork\Infra.Data.Seedwork.csproj" />
     <ProjectReference Include="..\Sistema.Domain\Sistema.Domain.csproj" />
   </ItemGroup>
 

@@ -15,6 +15,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Linx.Infra.Data;
+using Linx.Domain;
+using Linx.Infra.Http.Seedwork.DependencyInjection;
+using Linx.Application.Services;
 
 namespace SistemaGustavoAPI
 {
@@ -36,8 +40,15 @@ namespace SistemaGustavoAPI
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddScoped<IEventoService, EventoService>();
+
+            //RegistrationBuilder.RegisterAll<IRepository, EventoRepository>(
+            //   (service, implementation) => services.AddScoped(service, implementation));
+
             services.AddScoped<IGeralRepository, GeralRepository>();
             services.AddScoped<IEventosRepository, EventoRepository>();
+
+            //RegistrationBuilder.RegisterAll<IAppService, EventoService>(
+            //    (service, implementation) => services.AddScoped(service, implementation));
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

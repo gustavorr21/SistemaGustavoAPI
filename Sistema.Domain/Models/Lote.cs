@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Domain.Models
 {
-    public class LoteViewModel
+    public class Lote
     {
         public int Id { get; set; }
         public string Nome { get; set; }
@@ -15,6 +15,6 @@ namespace Sistema.Domain.Models
         public DateTime? DataFim { get; set; }
         public int Quantidade { get; set; }
         public int EventoId { get; set; }
-        public EventoViewModel Evento { get; set; }
+        public EventoOcorrido Evento { get; set; }
     }
 }

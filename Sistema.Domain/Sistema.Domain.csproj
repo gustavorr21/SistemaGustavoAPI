@@ -4,4 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Tino\PORTAL_MOBILIDADE\API_PORTAL\src\PortalMobilidade.Seedwork\Domain.Seedwork\Domain.Seedwork.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -16,9 +16,9 @@ namespace Sistema.Repository.Repositorys.Palestrante
         {
             _context = context;
         }
-        public async Task<ICollection<PalestranteViewModel>> GetAllPalestranteAsync()
+        public async Task<ICollection<Domain.Models.Palestrante>> GetAllPalestranteAsync()
         {
-            IQueryable<PalestranteViewModel> query =
+            IQueryable<Domain.Models.Palestrante> query =
                _context.Palestrantes
                .Include(e => e.RedesSociais)
                .Include(e => e.PalestrantesEventos)
@@ -30,9 +30,9 @@ namespace Sistema.Repository.Repositorys.Palestrante
             return await query.ToListAsync();
         }
 
-        public async Task<PalestranteViewModel> GetAllPalestranteByIdAsync(int Id)
+        public async Task<Domain.Models.Palestrante> GetAllPalestranteByIdAsync(int Id)
         {
-            IQueryable<PalestranteViewModel> query =
+            IQueryable<Domain.Models.Palestrante> query =
              _context.Palestrantes
              .Include(p => p.RedesSociais)
              .Include(p => p.PalestrantesEventos)
@@ -45,9 +45,9 @@ namespace Sistema.Repository.Repositorys.Palestrante
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<PalestranteViewModel>> GetPalestranteByFilterAsync(string nome)
+        public async Task<ICollection<Domain.Models.Palestrante>> GetPalestranteByFilterAsync(string nome)
         {
-            IQueryable<PalestranteViewModel> query =
+            IQueryable<Domain.Models.Palestrante> query =
              _context.Palestrantes
              .Include(p => p.RedesSociais)
              .Include(p => p.PalestrantesEventos)

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Tino\PORTAL_MOBILIDADE\API_PORTAL\src\PortalMobilidade.Seedwork\Infra.Data.Query.Seedwork\Infra.Data.Query.Seedwork.csproj" />
+    <ProjectReference Include="..\Sistema.Application\Sistema.Application.csproj" />
+  </ItemGroup>
+
+</Project>

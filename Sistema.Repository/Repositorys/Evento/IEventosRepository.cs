@@ -1,4 +1,6 @@
-﻿using Sistema.Domain.Models;
+﻿using Linx.Domain;
+using Linx.Infra.Crosscutting;
+using Sistema.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +11,8 @@ namespace Sistema.Repository.Repositorys.Evento
 {
     public interface IEventosRepository
     {
-        Task<ICollection<EventoViewModel>> GetEventosByFilterAsync(string tema);
-        Task<ICollection<EventoViewModel>> GetAllEventosAsync();
-        Task<EventoViewModel> GetAllEventosByIdAsync(int Id);
+        Task<ICollection<EventoOcorrido>> GetEventosByFilterAsync(string tema);
+        Task<IEnumerable<EventoOcorrido>> GetAllEventosAsync();
+        Task<EventoOcorrido> GetAllEventosByIdAsync(int Id);
     }
 }

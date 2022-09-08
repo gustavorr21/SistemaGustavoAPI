@@ -6,19 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Linx.Infra.Data;
 
 namespace Sistema.Repository.Repositorys.Evento
 {
-    public class EventoRepository : IEventosRepository
+    public class EventoRepository :/* Repository<EventoOcorrido>,*/ IEventosRepository
     {
         private readonly ApplicationDbContext _context;
-        public EventoRepository(ApplicationDbContext context)
+        public EventoRepository(ApplicationDbContext context /*IEFUnitOfWork unitOfWork*/) /*: base(unitOfWork)*/
         {
             _context = context;
         }
-        public async Task<ICollection<EventoViewModel>> GetAllEventosAsync()
+        public async Task<IEnumerable<EventoOcorrido>> GetAllEventosAsync()
         {
-            IQueryable<EventoViewModel> query =
+            IQueryable<EventoOcorrido> query =
                 _context.Eventos
                 .Include(e => e.Lotes)
                 .Include(e => e.RedesSociais)
@@ -30,9 +31,9 @@ namespace Sistema.Repository.Repositorys.Evento
 
             return await query.ToListAsync();
         }
-        public async Task<ICollection<EventoViewModel>> GetEventosByFilterAsync(string tema)
+        public async Task<ICollection<EventoOcorrido>> GetEventosByFilterAsync(string tema)
         {
-            IQueryable<EventoViewModel> query =
+            IQueryable<EventoOcorrido> query =
                _context.Eventos
                .Include(e => e.Lotes)
                .Include(e => e.RedesSociais)
@@ -47,20 +48,18 @@ namespace Sistema.Repository.Repositorys.Evento
 
             return await query.ToListAsync();
         }
-        public async Task<EventoViewModel> GetAllEventosByIdAsync(int Id)
+        public async Task<EventoOcorrido> GetAllEventosByIdAsync(int Id)
         {
-            IQueryable<EventoViewModel> query =
+            return await
                _context.Eventos
                .Include(e => e.Lotes)
                .Include(e => e.RedesSociais)
                .Include(e => e.PalestrantesEventos)
                    .ThenInclude(pe => pe.Palestrante)
                .AsNoTracking()
-               .Where(e => e.Id == Id);
-
-            query = query.OrderBy(e => e.Id);
-
-            return await query.FirstOrDefaultAsync();
+               .Where(e => e.Id == Id)
+                .OrderBy(e => e.Id)
+                .FirstOrDefaultAsync();
         }
     }
 }

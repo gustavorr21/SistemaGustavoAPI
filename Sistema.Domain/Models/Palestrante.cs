@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Domain.Models
 {
-    public class PalestranteViewModel
+    public class Palestrante
     {
         public int Id { get; set; }
         public string Nome { get; set; }
@@ -14,7 +14,7 @@ namespace Sistema.Domain.Models
         public string ImagemURL { get; set; }
         public string Telefone { get; set; }
         public string Email { get; set; }
-        public IEnumerable<RedeSocialViewModel> RedesSociais { get; set; }
-        public IEnumerable<PalestranteEventoViewModel> PalestrantesEventos { get; set; }
+        public IEnumerable<RedeSocial> RedesSociais { get; set; }
+        public IEnumerable<PalestranteEvento> PalestrantesEventos { get; set; }
     }
 }
