@@ -50,6 +50,10 @@ namespace Sistema.Domain.Models
         {
             Tema = tema;
         }
+        public void AtualizarImagem(string imagem)
+        {
+            ImagemUrl = imagem;
+        }
         public void AtualizarQtdPessoas(string qtdPessoas)
         {
             QtdPessoas = qtdPessoas;

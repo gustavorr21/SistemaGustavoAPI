@@ -7,6 +7,9 @@ using Sistema.Application.ApplicationDTO.Requests;
 using Linx.Application.Results;
 using Linx.Infra.Crosscutting.Requests;
 using Infra.Http.Seedwork.Controllers;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Linq;
 
 namespace SistemaGustavoAPI.Controllers
 {
@@ -15,9 +18,13 @@ namespace SistemaGustavoAPI.Controllers
     public class EventoController : ApiController
     {
         private readonly IEventoService _eventoService;
-        public EventoController(IEventoService eventoService)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public EventoController(IEventoService eventoService,
+            IWebHostEnvironment webHostEnvironment)
         {
             _eventoService = eventoService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet]
@@ -36,14 +43,14 @@ namespace SistemaGustavoAPI.Controllers
         [HttpGet("{id:long}")]
         public async Task<IActionResult> ObterGrupo([FromRoute] int id)
         {
-            EventoDto equipamento = await _eventoService.GetAllEventosByIdAsync(id);
+            EventoDto evento = await _eventoService.GetAllEventosByIdAsync(id);
 
-            if (equipamento is null)
+            if (evento is null)
             {
                 return NotFound(new ApiResult(new ApiError("Equipamento não encontrado")));
             }
 
-            return Ok(equipamento);
+            return Ok(evento);
         }
 
         [HttpGet("pesquisar")]
@@ -84,6 +91,44 @@ namespace SistemaGustavoAPI.Controllers
             try
             {
                 return Ok(await _eventoService.DeleteEvento(id));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpPost("upload-imagem/{eventoId:long}")]
+        public async Task<IActionResult> UploadImagem([FromRoute] int eventoId)
+        {
+            try
+            {
+                EventoDto evento = await _eventoService.GetAllEventosByIdAsync(eventoId);
+
+                if (evento is null)
+                {
+                    return NotFound(new ApiResult(new ApiError("Equipamento não encontrado")));
+                }
+
+                var file = Request.Form.Files[0];
+                if(file.Length > 0)
+                {
+                    //deletar imagem
+                    var imagemPath = Path.Combine(_webHostEnvironment.ContentRootPath, @"Resources/Imagens", evento.ImagemUrl);
+                    var eventoRetorno = await _eventoService.DeletarImagem(eventoId, imagemPath);
+
+                    string imageName = new String(Path.GetFileNameWithoutExtension(file.FileName)
+                                       .Take(10)
+                                       .ToArray()).Replace(" ", "-");
+                    imageName = $"{imageName}{DateTime.UtcNow.ToString("yymmssfff")}{Path.GetExtension(file.FileName)}";
+
+                    var newImagemPath = Path.Combine(_webHostEnvironment.ContentRootPath, @"Resources/Imagens", imageName);
+
+                    var saveImagem = await _eventoService.SaveImagem(file, newImagemPath, eventoId);
+                }
+
+                return Ok(evento);
+
             }
             catch (Exception ex)
             {

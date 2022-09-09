@@ -1,5 +1,6 @@
 ﻿using Linx.Infra.Crosscutting;
 using Linx.Infra.Crosscutting.Requests;
+using Microsoft.AspNetCore.Http;
 using Sistema.Application.ApplicationDTO.Dtos;
 using Sistema.Application.ApplicationDTO.Requests;
 using Sistema.Application.ApplicationDTO.Result;
@@ -21,5 +22,7 @@ namespace Sistema.Application.Application.Evento
         Task<IEnumerable<EventoDto>> GetAllEventosAsync();
         Task<EventoDto> GetAllEventosByIdAsync(int Id);
         Task<IPagedCollection<EventoDto>> PesquisarEvento(PesquisarEventoFilterRequest filtro, PaginationRequest pagination);
+        Task<SalvarEventoResult> DeletarImagem(int eventoId, string imagemPath);
+        Task<SalvarEventoResult> SaveImagem(IFormFile imagemFile, string newImagem, int eventoId);
     }
 }

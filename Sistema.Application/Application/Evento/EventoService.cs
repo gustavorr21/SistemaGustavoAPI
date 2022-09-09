@@ -1,6 +1,7 @@
 ﻿using Linx.Infra.Crosscutting;
 using Linx.Infra.Crosscutting.Exceptions;
 using Linx.Infra.Crosscutting.Requests;
+using Microsoft.AspNetCore.Http;
 using Sistema.Application.ApplicationDTO.Dtos;
 using Sistema.Application.ApplicationDTO.Requests;
 using Sistema.Application.ApplicationDTO.Result;
@@ -9,6 +10,7 @@ using Sistema.Repository.Repositorys.Evento;
 using Sistema.Repository.Repositorys.Geral;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -140,6 +142,32 @@ namespace Sistema.Application.Application.Evento
             //    filtro.Modelo,
             //    filtro.TipoId,
             //    pagination.ToPagination());
+        }
+
+        public async Task<SalvarEventoResult> DeletarImagem(int eventoId, string imagemPath)
+        {
+            var evento = await _eventoRepository.GetAllEventosByIdAsync(eventoId);
+            if (System.IO.File.Exists(imagemPath))
+                   System.IO.File.Delete(imagemPath);
+
+
+            _geralRepository.Update<EventoOcorrido>(evento);
+
+            return new SalvarEventoResult((EventoDto)evento);
+        }
+
+        public async Task<SalvarEventoResult> SaveImagem(IFormFile imagemFile, string newImagem, int eventoId)
+        {
+            var evento = await _eventoRepository.GetAllEventosByIdAsync(eventoId);
+
+            using (var fileSteam = new FileStream(newImagem, FileMode.Create))
+            {
+                await imagemFile.CopyToAsync(fileSteam);
+            }
+
+            evento.AtualizarImagemUrl(newImagem);
+
+            return new SalvarEventoResult((EventoDto)evento);
         }
 
     }

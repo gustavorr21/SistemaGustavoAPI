@@ -19,6 +19,10 @@ using Linx.Infra.Data;
 using Linx.Domain;
 using Linx.Infra.Http.Seedwork.DependencyInjection;
 using Linx.Application.Services;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using Linx.Infra.Http.Configurations;
 
 namespace SistemaGustavoAPI
 {
@@ -72,12 +76,46 @@ namespace SistemaGustavoAPI
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            //var optionsBuilder = new ApplicationBuilderOptions
+            //{
+            //    UseSwagger = true,
+            //    Swagger = new ApplicationBuilderSwaggerOptions
+            //    {
+            //        EndpointName = "Swagger UI v1",
+            //        RoutePrefix = string.Empty,
+            //        Flow = "implicit",
+            //        OAuthClientId = "swagger-oidc",
+            //        OAuthAppName = "Swagger UI"
+            //    },
+            //    Cors = new ApplicationBuilderCorsOptions
+            //    {
+            //        Origins = Array.Empty<string>()
+            //    }
+            //};
+
+
+            //if (optionsBuilder.UseSwagger)
+            //{
+            //    app.UseSwagger();
+            //    app.UseSwaggerUI(c =>
+            //    {
+            //        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger Gr V1");
+            //        c.DisplayRequestDuration();
+            //        c.OAuthUseBasicAuthenticationWithAccessCodeGrant();
+            //        c.OAuthScopes(new string[] { "" });
+            //    });
+            //}
 
             app.UseEndpoints(endpoints =>
             {

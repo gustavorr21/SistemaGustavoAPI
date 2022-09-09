@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Sistema.Repository\Sistema.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\Imagens\" />
+  </ItemGroup>
+
 </Project>
