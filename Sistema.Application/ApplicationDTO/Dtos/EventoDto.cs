@@ -29,6 +29,12 @@ namespace Sistema.Application.ApplicationDTO.Dtos
             return new EventoDto
             {
                 Local = evento.Local,
+                DataEvento = evento.DataEvento,
+                Tema = evento.Tema,
+                QtdPessoas = evento.QtdPessoas,
+                Telefone = evento.Telefone,
+                Email = evento.Email,
+                ImagemUrl = evento.ImagemUrl,
             };
         }
     }

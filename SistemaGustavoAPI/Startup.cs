@@ -23,6 +23,7 @@ using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Linx.Infra.Http.Configurations;
+using Microsoft.OpenApi.Models;
 
 namespace SistemaGustavoAPI
 {
@@ -42,6 +43,8 @@ namespace SistemaGustavoAPI
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Version = "v1" }); });
 
             services.AddScoped<IEventoService, EventoService>();
 
@@ -87,6 +90,13 @@ namespace SistemaGustavoAPI
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.RoutePrefix = String.Empty;
+                c.SwaggerEndpoint("swagger/v1/swagger.json", "v1");
+            });
             //var optionsBuilder = new ApplicationBuilderOptions
             //{
             //    UseSwagger = true,

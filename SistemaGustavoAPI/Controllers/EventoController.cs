@@ -10,6 +10,7 @@ using Infra.Http.Seedwork.Controllers;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace SistemaGustavoAPI.Controllers
 {
@@ -99,7 +100,7 @@ namespace SistemaGustavoAPI.Controllers
         }
 
         [HttpPost("upload-imagem/{eventoId:long}")]
-        public async Task<IActionResult> UploadImagem([FromRoute] int eventoId)
+        public async Task<IActionResult> UploadImagem([FromRoute] int eventoId, IFormFile filea)
         {
             try
             {
@@ -124,10 +125,10 @@ namespace SistemaGustavoAPI.Controllers
 
                     var newImagemPath = Path.Combine(_webHostEnvironment.ContentRootPath, @"Resources/Imagens", imageName);
 
-                    var saveImagem = await _eventoService.SaveImagem(file, newImagemPath, eventoId);
+                    return Ok(await _eventoService.SaveImagem(file, newImagemPath, eventoId));
                 }
 
-                return Ok(evento);
+                return NotFound("Imagem não encontrada");
 
             }
             catch (Exception ex)

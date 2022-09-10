@@ -40,6 +40,7 @@ namespace Sistema.Application.Application.Evento
                 newEvento.AtualizarDataEvento(DateTime.Now);
 
                 _geralRepository.Add<EventoOcorrido>(newEvento);
+                await _geralRepository.SaveChangesAsync();
 
                 return new SalvarEventoResult((EventoDto)newEvento);
             }
@@ -65,6 +66,7 @@ namespace Sistema.Application.Application.Evento
 
 
                 _geralRepository.Update<EventoOcorrido>(eventUp);
+                await _geralRepository.SaveChangesAsync();
 
                 return new SalvarEventoResult((EventoDto)eventUp);
             }
@@ -150,8 +152,8 @@ namespace Sistema.Application.Application.Evento
             if (System.IO.File.Exists(imagemPath))
                    System.IO.File.Delete(imagemPath);
 
-
-            _geralRepository.Update<EventoOcorrido>(evento);
+            //_geralRepository.Update<EventoOcorrido>(evento);
+            //await _geralRepository.SaveChangesAsync();
 
             return new SalvarEventoResult((EventoDto)evento);
         }
@@ -166,6 +168,9 @@ namespace Sistema.Application.Application.Evento
             }
 
             evento.AtualizarImagemUrl(newImagem);
+
+            _geralRepository.Update<EventoOcorrido>(evento);
+            await _geralRepository.SaveChangesAsync();
 
             return new SalvarEventoResult((EventoDto)evento);
         }
