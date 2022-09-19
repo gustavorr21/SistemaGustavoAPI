@@ -7,7 +7,7 @@ using Sistema.Domain.Identity;
 namespace Sistema.Repository.Data
 {
     public class ApplicationDbContext : IdentityDbContext
-        <User, Role, int, IdentityUserClaim<int>, IdentityUserRole<int>, 
+        <User, Role, int, IdentityUserClaim<int>, UserRole, 
         IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -37,8 +37,6 @@ namespace Sistema.Repository.Data
                         .IsRequired();
                 }
             );
-
-
 
             modelBuilder.Entity<PalestranteEvento>()
                         .HasKey(pe => new { pe.EventoId, pe.PalestranteId });

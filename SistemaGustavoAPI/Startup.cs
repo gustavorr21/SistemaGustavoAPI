@@ -56,9 +56,9 @@ namespace SistemaGustavoAPI
 
             //RegistrationBuilder.RegisterAll<IAppService, EventoService>(
             //    (service, implementation) => services.AddScoped(service, implementation));
-
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews()
                     .AddNewtonsoftJson(x=>x.SerializerSettings.ReferenceLoopHandling =
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore);
