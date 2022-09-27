@@ -4,26 +4,24 @@ using Sistema.Repository.Repositorys.Evento;
 using Sistema.Repository.Repositorys.Geral;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Linx.Infra.Data;
-using Linx.Domain;
-using Linx.Infra.Http.Seedwork.DependencyInjection;
-using Linx.Application.Services;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
-using Linx.Infra.Http.Configurations;
 using Microsoft.OpenApi.Models;
+using Sistema.Repository.Repositorys.Usuario;
+using Sistema.Application.Application.Token;
+using Sistema.Application.Application.Accounts;
+using System.Text.Json.Serialization;
+using Sistema.Domain.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace SistemaGustavoAPI
 {
@@ -44,24 +42,59 @@ namespace SistemaGustavoAPI
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddIdentityCore<User>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+            })
+           .AddRoles<Role>()
+           .AddRoleManager<RoleManager<Role>>()
+           .AddSignInManager<SignInManager<User>>()
+           .AddRoleValidator<RoleValidator<Role>>()
+           .AddEntityFrameworkStores<ApplicationDbContext>()
+           .AddDefaultTokenProviders();
+
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuerSigningKey = true,
+                            ValidateIssuer = false,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
+                            ValidateAudience = false
+                        };
+                    });
+
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Version = "v1" }); });
 
             services.AddScoped<IEventoService, EventoService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             //RegistrationBuilder.RegisterAll<IRepository, EventoRepository>(
             //   (service, implementation) => services.AddScoped(service, implementation));
 
             services.AddScoped<IGeralRepository, GeralRepository>();
             services.AddScoped<IEventosRepository, EventoRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             //RegistrationBuilder.RegisterAll<IAppService, EventoService>(
             //    (service, implementation) => services.AddScoped(service, implementation));
-            
+
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews()
-                    .AddNewtonsoftJson(x=>x.SerializerSettings.ReferenceLoopHandling =
-                    Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                    .AddJsonOptions(options => 
+                        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())
+                    )
+                    .AddNewtonsoftJson(options => 
+                        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                    );
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
