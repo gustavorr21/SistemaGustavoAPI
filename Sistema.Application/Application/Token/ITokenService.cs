@@ -1,4 +1,5 @@
-﻿using Sistema.Application.ApplicationDTO.Requests;
+﻿using Sistema.Application.ApplicationDTO.Dtos;
+using Sistema.Application.ApplicationDTO.Requests;
 using Sistema.Application.ApplicationDTO.Result;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace Sistema.Application.Application.Token
 {
     public interface ITokenService
     {
-        Task<string> CreateToken(CriarUsuarioDtoRequest salvarUsuarioResult);
+        Task<string> CreateToken(UserDto salvarUsuarioResult);
     }
 }

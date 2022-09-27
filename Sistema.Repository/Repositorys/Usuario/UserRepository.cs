@@ -30,6 +30,8 @@ namespace Sistema.Repository.Repositorys.Usuario
 
         public async Task<User> GetUserByNameAsync(string name)
         {
+            var aa = await _context.Users.
+                            SingleOrDefaultAsync(u => u.UserName == name.ToLower());
             return await _context.Users.
                             SingleOrDefaultAsync(u=>u.UserName == name.ToLower());
         }

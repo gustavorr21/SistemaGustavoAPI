@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Sistema.Application.ApplicationDTO.Dtos;
 using Sistema.Application.ApplicationDTO.Requests;
 using Sistema.Application.ApplicationDTO.Result;
 using Sistema.Domain.Identity;
@@ -27,17 +28,20 @@ namespace Sistema.Application.Application.Token
             _userManager = userManager;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
         }
-        public async Task<string> CreateToken(CriarUsuarioDtoRequest usuarioDto)
+        public async Task<string> CreateToken(UserDto usuarioDto)
         {
-            var user = new User(usuarioDto.User.PrimeiroNome,
-                                        usuarioDto.User.UltimoNome,
-                                        usuarioDto.User.Titulo,
-                                        usuarioDto.User.Email,
-                                        usuarioDto.User.Descricao,
-                                        usuarioDto.User.Funcao);
+            var user = new User(usuarioDto.PrimeiroNome,
+                                        usuarioDto.UltimoNome,
+                                        usuarioDto.Titulo,
+                                        usuarioDto.Email,
+                                        usuarioDto.Descricao,
+                                        usuarioDto.Funcao);
+            user.UserName = usuarioDto.UserName;
+            user.Id = usuarioDto.Id;
+
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, usuarioDto.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
             };
 
@@ -49,7 +53,7 @@ namespace Sistema.Application.Application.Token
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(5),
+                Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = creds
             };
 

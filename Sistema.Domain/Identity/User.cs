@@ -2,6 +2,7 @@
 using Sistema.Domain.Enum;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,8 @@ namespace Sistema.Domain.Identity
         public string ImagemUrl { get; set; }
         public List<UserRole> UserRoles{ get; set; }
 
+        [NotMapped]
+        public string Token { get; set; }
         protected User() : base() { }
         public User(string primeiroNome,
                            string ultimoNome,

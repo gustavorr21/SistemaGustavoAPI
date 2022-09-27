@@ -29,11 +29,11 @@ namespace Sistema.Application.Application.Accounts
             _userManager = userManager;
             _userRepository = userRepository;
         }
-        public async Task<SignInResult> CheckPasswordAsync(CriarUsuarioDtoRequest userUpdtateDto, string password)
+        public async Task<SignInResult> CheckPasswordAsync(UserDto userUpdtateDto, string password)
         {
             try
             {
-                var user = await _userManager.Users.SingleOrDefaultAsync(u=>u.UserName == userUpdtateDto.User.UserName.ToLower());
+                var user = await _userManager.Users.SingleOrDefaultAsync(u=>u.UserName == userUpdtateDto.UserName.ToLower());
 
                 return await _signInManager.CheckPasswordSignInAsync(user, password, false);
             }
@@ -79,7 +79,7 @@ namespace Sistema.Application.Application.Accounts
             }
         }
 
-        public async Task<SalvarUsuarioResult> UpdateAccount(CriarUsuarioDtoRequest userUpdtateDto)
+        public async Task<SalvarUsuarioResult> UpdateAccount(AtualizarUsuarioDtoRequest userUpdtateDto)
         {
             try
             {
@@ -92,6 +92,12 @@ namespace Sistema.Application.Application.Accounts
 
                 //este serve como base, so ir implementando
                 userUp.AtualizarPrimeiroNome(userUpdtateDto.User.PrimeiroNome);
+                userUp.AtualizarUltimoNome(userUpdtateDto.User.UltimoNome);
+                userUp.AtualizarEmail(userUpdtateDto.User.Email);
+                userUp.AtualizarPassword(userUpdtateDto.User.Password);
+                userUp.AtualizarDescricao(userUpdtateDto.User.Descricao);
+                userUp.AtualizarTitulo(userUpdtateDto.User.Titulo);
+                userUp.AtualizarFuncao(userUpdtateDto.User.Funcao);
 
                 _userRepository.Update<User>(userUp);
 

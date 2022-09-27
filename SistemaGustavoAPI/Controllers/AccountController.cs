@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sistema.Application.Application.Accounts;
 using Sistema.Application.Application.Token;
+using Sistema.Application.ApplicationDTO.Dtos;
 using Sistema.Application.ApplicationDTO.Requests;
 using Sistema.Application.ApplicationDTO.Result;
+using SistemaGustavoAPI.Extensions;
 using System;
 using System.Threading.Tasks;
 
@@ -23,12 +25,13 @@ namespace SistemaGustavoAPI.Controllers
             _accountService = accountService;
             _tokenService = tokenService;
         }
-        [HttpGet("GetUser/{userName}")]
+        [HttpGet("GetUser")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetUser(string userName)
+        public async Task<IActionResult> GetUser()
         {
             try
             {
+                var userName = User.GetUserName();
                 return Ok(await _accountService.GetUserByNameAsync(userName));
             }
             catch (Exception ex)
@@ -54,5 +57,55 @@ namespace SistemaGustavoAPI.Controllers
             }
         }
 
+        [HttpPost("Login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(UserLoginDto loginRequest)
+        {
+            try
+            {
+                var user = await _accountService.GetUserByNameAsync(loginRequest.UserName);
+                if (user == null) return Unauthorized("Usuário invalido");
+
+                var result = await _accountService.CheckPasswordAsync(user, loginRequest.Password);
+                if (result == null) return Unauthorized("Usuário invalido");
+
+                return Ok(new { 
+                    userName = user.UserName,
+                    primeiroNome = user.PrimeiroNome,
+                    token = (await _tokenService.CreateToken(user)).ToString()
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpPut("atualizar-usuario")]
+        public async Task<IActionResult> UpdateUser(AtualizarUsuarioDtoRequest userUpdateDto)
+        {
+            try
+            {
+                if (userUpdateDto.User.UserName != User.GetUserName().ToString())
+                    return Unauthorized("Usuário Inválido");
+
+                var user = await _accountService.GetUserByNameAsync(User.GetUserName());
+                if (user == null) return Unauthorized("Usuário Inválido");
+
+                var userReturn = await _accountService.UpdateAccount(userUpdateDto);
+                if (userReturn == null) return NoContent();
+
+                return Ok(new
+                {
+                    userName = userReturn.Result.UserName,
+                    PrimeroNome = userReturn.Result.PrimeiroNome,
+                    token = _tokenService.CreateToken(userReturn.Result).Result
+                });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

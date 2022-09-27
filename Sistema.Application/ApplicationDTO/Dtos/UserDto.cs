@@ -29,7 +29,16 @@ namespace Sistema.Application.ApplicationDTO.Dtos
 
             return new UserDto
             {
+                Id = user.Id,
                 PrimeiroNome = user.PrimeiroNome,
+                Titulo = user.Titulo,
+                UserName = user.UserName,
+                UltimoNome = user.UltimoNome,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Funcao = user.Funcao,
+                Descricao = user.Descricao,
+                Token = user.Token,
             };
         }
     }

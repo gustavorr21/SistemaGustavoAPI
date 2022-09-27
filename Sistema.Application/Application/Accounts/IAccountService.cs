@@ -14,8 +14,8 @@ namespace Sistema.Application.Application.Accounts
     {
         Task<bool> UserExists(string userName);
         Task<UserDto> GetUserByNameAsync(string userName);
-        Task<SignInResult> CheckPasswordAsync(CriarUsuarioDtoRequest userUpdtateDto, string password);
+        Task<SignInResult> CheckPasswordAsync(UserDto userUpdtateDto, string password);
         Task<SalvarUsuarioResult> CreateAccountAsync(UserDto userDto);
-        Task<SalvarUsuarioResult> UpdateAccount(CriarUsuarioDtoRequest userUpdtateDto);
+        Task<SalvarUsuarioResult> UpdateAccount(AtualizarUsuarioDtoRequest userUpdtateDto);
     }
 }
