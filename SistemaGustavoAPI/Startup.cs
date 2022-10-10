@@ -79,7 +79,7 @@ namespace SistemaGustavoAPI
             //   (service, implementation) => services.AddScoped(service, implementation));
 
             services.AddScoped<IGeralRepository, GeralRepository>();
-            services.AddScoped<IEventosRepository, EventoRepository>();
+            services.AddScoped<IEventoRepository, EventoRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             //RegistrationBuilder.RegisterAll<IAppService, EventoService>(
@@ -94,6 +94,7 @@ namespace SistemaGustavoAPI
                     .AddNewtonsoftJson(options => 
                         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                     );
+            services.AddCors();
             services.AddMvc();
         }
 
@@ -118,6 +119,10 @@ namespace SistemaGustavoAPI
                 RequestPath = new PathString("/Resources")
             });
 
+            app.UseCors(x => x.AllowAnyHeader()
+                             .AllowAnyMethod()
+                             .AllowAnyOrigin());
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -130,6 +135,8 @@ namespace SistemaGustavoAPI
                 c.RoutePrefix = String.Empty;
                 c.SwaggerEndpoint("swagger/v1/swagger.json", "v1");
             });
+
+
             //var optionsBuilder = new ApplicationBuilderOptions
             //{
             //    UseSwagger = true,

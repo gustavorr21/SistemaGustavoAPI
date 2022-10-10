@@ -1,8 +1,10 @@
 ﻿using Linx.Domain;
+using Linx.Infra.Crosscutting;
 using Sistema.Domain.Identity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sistema.Domain.Models
 {
@@ -18,9 +20,11 @@ namespace Sistema.Domain.Models
         public string Email { get; set; }
         public int? UserId { get; set; }
         public User User { get; set; }
-        public IEnumerable<Lote> Lotes { get; set; }
-        public IEnumerable<RedeSocial> RedesSociais { get; set; }
-        public IEnumerable<PalestranteEvento> PalestrantesEventos { get; set; }
+        //public IEnumerable<Lote> Lotes { get; set; }
+
+        public ICollection<Lote> Lotes { get; private set; } = new List<Lote>();
+        public ICollection<RedeSocial> RedesSociais { get; private set; } = new List<RedeSocial>();
+        public ICollection<PalestranteEvento> PalestrantesEventos { get; private set; } = new List<PalestranteEvento>();
 
 
         protected EventoOcorrido() : base() { }
@@ -39,6 +43,28 @@ namespace Sistema.Domain.Models
             AtualizarImagemUrl(imagemUrl);
             AtualizarTelefone(telefone);
             AtualizarEmail(email);
+        }
+
+        public void IncluirLotes(Lote lotes)
+        {
+            Lotes.Add(lotes);
+        }
+        public void RemoverLote(Lote lotes)
+        {
+            Lotes.Remove(lotes);
+        }
+        public void AtualizarLote(Lote lote)
+        {
+            Lote loteDb = Lotes.FirstOrDefault(x => x.Id == lote.Id);
+
+            if (loteDb == null || loteDb.Id == 0)
+            {
+                Lotes.Add(lote);
+            }
+            else
+            {
+                loteDb = lote;
+            }
         }
 
         public void AtualizarDataEvento(DateTime? dataEvento)

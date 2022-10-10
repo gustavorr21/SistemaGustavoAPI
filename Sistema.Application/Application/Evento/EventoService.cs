@@ -1,7 +1,9 @@
-﻿using Linx.Infra.Crosscutting;
+﻿using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using Linx.Infra.Crosscutting;
 using Linx.Infra.Crosscutting.Exceptions;
 using Linx.Infra.Crosscutting.Requests;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Sistema.Application.ApplicationDTO.Dtos;
 using Sistema.Application.ApplicationDTO.Requests;
 using Sistema.Application.ApplicationDTO.Result;
@@ -14,15 +16,16 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static IdentityModel.OidcConstants;
 
 namespace Sistema.Application.Application.Evento
 {
     public class EventoService : IEventoService
     {
         private readonly IGeralRepository _geralRepository;
-        private readonly IEventosRepository _eventoRepository;
+        private readonly IEventoRepository _eventoRepository;
         //private readonly IEventoQueryRepository _eventoQueryRepository;
-        public EventoService(IGeralRepository geralRepository, IEventosRepository eventoRepository)
+        public EventoService(IGeralRepository geralRepository, IEventoRepository eventoRepository)
         {
             _geralRepository = geralRepository;
             _eventoRepository = eventoRepository;
@@ -31,6 +34,8 @@ namespace Sistema.Application.Application.Evento
         {
             try
             {
+
+                Lote eventoLote;
                 var newEvento = new EventoOcorrido(evento.Evento.Local,
                                               evento.Evento.Tema,
                                               evento.Evento.QtdPessoas,
@@ -38,6 +43,12 @@ namespace Sistema.Application.Application.Evento
                                               evento.Evento.Telefone,
                                               evento.Evento.Email);
                 newEvento.AtualizarDataEvento(DateTime.Now);
+
+                foreach (var model in evento.Evento.Lotes)
+                {
+                    eventoLote = new Lote(model.Nome, model.Preco,model.DataFim,model.DataFim, model.Quantidade,0);
+                    newEvento.IncluirLotes(eventoLote);
+                }
 
                 _geralRepository.Add<EventoOcorrido>(newEvento);
                 await _geralRepository.SaveChangesAsync();
@@ -64,6 +75,37 @@ namespace Sistema.Application.Application.Evento
                 eventUp.AtualizarTelefone(request.Evento.Telefone);
                 eventUp.AtualizarTema(request.Evento.Tema);
 
+
+                //atualizar/remover  lotes
+                foreach(SalvarLoteDto item in request.Evento.Lotes)
+                {
+                    Lote lote = null;
+
+                    var eventoLoteId = item.Id;
+
+                    if(eventoLoteId > 0)
+                    {
+                        lote = eventUp.Lotes.FirstOrDefault(x => x.Id == eventoLoteId);
+
+                        if (item.Remover)
+                        {
+                            if (lote != null)
+                                _geralRepository.Delete<Lote>(lote);
+                            continue;
+                        }
+                    }
+
+                    if(lote is null)
+                        lote = new Lote(item.Nome, item.Preco, item.DataFim, item.DataFim, item.Quantidade, id);
+
+                    lote.AtualizarNome(item.Nome);
+                    lote.AtualizarPreco(item.Preco);
+                    lote.AtualizarDataInicio(item.DataInicio);
+                    lote.AtualizarDataFim(item.DataFim);
+                    lote.AtualizarQuantidade(item.Quantidade);
+
+                    eventUp.AtualizarLote(lote);
+                }
 
                 _geralRepository.Update<EventoOcorrido>(eventUp);
                 await _geralRepository.SaveChangesAsync();
@@ -174,6 +216,26 @@ namespace Sistema.Application.Application.Evento
 
             return new SalvarEventoResult((EventoDto)evento);
         }
+        public async Task<SalvarLoteResult> AddLote(int eventoId, Lote lote)
+        {
+            try
+            {
+                var newLote = new Lote(lote.Nome,
+                                              lote.Preco,
+                                              lote.DataInicio,
+                                              lote.DataFim,
+                                              lote.Quantidade,
+                                              eventoId);
 
+                _geralRepository.Add<Lote>(newLote);
+                //await _geralRepository.SaveChangesAsync();
+
+                return new SalvarLoteResult((LotesDto)newLote);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -10,7 +10,7 @@ using Linx.Infra.Data;
 
 namespace Sistema.Repository.Repositorys.Evento
 {
-    public class EventoRepository :/* Repository<EventoOcorrido>,*/ IEventosRepository
+    public class EventoRepository :/* Repository<EventoOcorrido>,*/ IEventoRepository
     {
         private readonly ApplicationDbContext _context;
         public EventoRepository(ApplicationDbContext context /*IEFUnitOfWork unitOfWork*/) /*: base(unitOfWork)*/

@@ -16,9 +16,11 @@ namespace Sistema.Application.ApplicationDTO.Dtos
         public string ImagemUrl { get; set; }
         public string Telefone { get; set; }
         public string Email { get; set; }
-        public IEnumerable<Lote> Lotes { get; set; }
-        public IEnumerable<RedeSocial> RedesSociais { get; set; }
-        public IEnumerable<PalestranteEvento> PalestrantesEventos { get; set; }
+
+
+        public List<SalvarLoteDto> Lotes { get; set; } = new List<SalvarLoteDto>();
+        public List<RedeSocial> RedesSociais { get; set; } = new List<RedeSocial>();
+        public List<PalestranteEvento> PalestrantesEventos { get; set; } = new List<PalestranteEvento>();
 
     }
 }

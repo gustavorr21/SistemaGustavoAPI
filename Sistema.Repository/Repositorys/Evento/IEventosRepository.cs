@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sistema.Repository.Repositorys.Evento
 {
-    public interface IEventosRepository
+    public interface IEventoRepository
     {
         Task<ICollection<EventoOcorrido>> GetEventosByFilterAsync(string tema);
         Task<IEnumerable<EventoOcorrido>> GetAllEventosAsync();
