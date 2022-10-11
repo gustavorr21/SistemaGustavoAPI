@@ -23,6 +23,6 @@ namespace Sistema.Application.Application.Evento
         Task<EventoDto> GetAllEventosByIdAsync(int Id);
         Task<IPagedCollection<EventoDto>> PesquisarEvento(PesquisarEventoFilterRequest filtro, PaginationRequest pagination);
         Task<SalvarEventoResult> DeletarImagem(int eventoId, string imagemPath);
-        Task<SalvarEventoResult> SaveImagem(IFormFile imagemFile, string newImagem, int eventoId);
+        Task<SalvarEventoResult> SaveImagem(IFormFile imagemFile, string newImagem, int eventoId, string imageName);
     }
 }

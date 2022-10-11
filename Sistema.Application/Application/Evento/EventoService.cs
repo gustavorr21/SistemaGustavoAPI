@@ -70,7 +70,7 @@ namespace Sistema.Application.Application.Evento
                 eventUp.AtualizarDataEvento(request.Evento.DataEvento);
                 eventUp.AtualizarLocal(request.Evento.Local);
                 eventUp.AtualizarEmail(request.Evento.Email);
-                eventUp.AtualizarImagemUrl(request.Evento.ImagemUrl);
+                //eventUp.AtualizarImagemUrl(request.Evento.ImagemUrl);
                 eventUp.AtualizarQtdPessoas(request.Evento.QtdPessoas);
                 eventUp.AtualizarTelefone(request.Evento.Telefone);
                 eventUp.AtualizarTema(request.Evento.Tema);
@@ -200,7 +200,7 @@ namespace Sistema.Application.Application.Evento
             return new SalvarEventoResult((EventoDto)evento);
         }
 
-        public async Task<SalvarEventoResult> SaveImagem(IFormFile imagemFile, string newImagem, int eventoId)
+        public async Task<SalvarEventoResult> SaveImagem(IFormFile imagemFile, string newImagem, int eventoId, string imageName)
         {
             var evento = await _eventoRepository.GetAllEventosByIdAsync(eventoId);
 
@@ -209,7 +209,7 @@ namespace Sistema.Application.Application.Evento
                 await imagemFile.CopyToAsync(fileSteam);
             }
 
-            evento.AtualizarImagemUrl(newImagem);
+            evento.AtualizarImagemUrl(imageName);
 
             _geralRepository.Update<EventoOcorrido>(evento);
             await _geralRepository.SaveChangesAsync();

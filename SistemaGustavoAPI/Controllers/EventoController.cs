@@ -125,7 +125,7 @@ namespace SistemaGustavoAPI.Controllers
 
                     var newImagemPath = Path.Combine(_webHostEnvironment.ContentRootPath, @"Resources/Imagens", imageName);
 
-                    return Ok(await _eventoService.SaveImagem(file, newImagemPath, eventoId));
+                    return Ok(await _eventoService.SaveImagem(file, newImagemPath, eventoId, imageName));
                 }
 
                 return NotFound("Imagem não encontrada");
