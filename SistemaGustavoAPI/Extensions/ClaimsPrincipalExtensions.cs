@@ -11,6 +11,7 @@ namespace SistemaGustavoAPI.Extensions
         }
         public static int GetUserId(this ClaimsPrincipal user)
         {
+            var aa = int.Parse(user.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             return int.Parse(user.FindFirst(ClaimTypes.NameIdentifier)?.Value);
         }
     }

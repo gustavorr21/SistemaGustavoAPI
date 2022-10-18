@@ -124,6 +124,8 @@ namespace Sistema.Application.Application.Evento
                 EventoOcorrido evento = await _eventoRepository.GetAllEventosByIdAsync(id)
                     ?? throw new ObjectNotFoundException("Evento não encontrado!");
 
+                await DeletarImagem(evento.Id, evento.ImagemUrl);
+
                 _geralRepository.Delete<EventoOcorrido>(evento);
                 await _geralRepository.SaveChangesAsync();
 
@@ -135,11 +137,11 @@ namespace Sistema.Application.Application.Evento
             }
         }
 
-        public async Task<IEnumerable<EventoDto>> GetAllEventosAsync()
+        public async Task<IEnumerable<EventoDto>> GetAllEventosAsync(long userId)
         {
             try
             {
-                IEnumerable<EventoOcorrido> evento = await _eventoRepository.GetAllEventosAsync();
+                IEnumerable<EventoOcorrido> evento = await _eventoRepository.GetAllEventosAsync(userId);
 
                 return evento?.Select(eq => (EventoDto)eq);
             }

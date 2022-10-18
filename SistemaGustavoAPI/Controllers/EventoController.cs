@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using SistemaGustavoAPI.Extensions;
 
 namespace SistemaGustavoAPI.Controllers
 {
@@ -33,7 +35,8 @@ namespace SistemaGustavoAPI.Controllers
         {
             try
             {
-                return Ok(await _eventoService.GetAllEventosAsync());
+                long userId = User.GetUserId();
+                return Ok(await _eventoService.GetAllEventosAsync(userId));
             }
             catch (Exception ex)
             {
@@ -91,7 +94,12 @@ namespace SistemaGustavoAPI.Controllers
         {
             try
             {
+                //EventoDto evento = await _eventoService.GetAllEventosByIdAsync(id);
+
+                //var imagemPath = Path.Combine(_webHostEnvironment.ContentRootPath, @"Resources/Imagens", evento.ImagemUrl);
+                //var eventoRetorno = await _eventoService.DeletarImagem(id, imagemPath);
                 return Ok(await _eventoService.DeleteEvento(id));
+
             }
             catch (Exception ex)
             {

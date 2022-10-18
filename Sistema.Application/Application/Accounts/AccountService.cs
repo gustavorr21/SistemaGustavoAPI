@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity.Core;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Sistema.Application.Application.Accounts
 {
@@ -56,8 +57,9 @@ namespace Sistema.Application.Application.Accounts
                                             userDto.Funcao);
                 newUsuario.UserName = userDto.UserName;
                 var result = await _userManager.CreateAsync(newUsuario, userDto.Password);
+
                 //var result = await _userManager.CreateAsync(newUsuario, user.Password);
-                
+
                 return new SalvarUsuarioResult((UserDto)newUsuario);  
             }
             catch (Exception ex)

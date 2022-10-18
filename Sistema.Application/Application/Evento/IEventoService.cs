@@ -19,7 +19,7 @@ namespace Sistema.Application.Application.Evento
         Task<SalvarEventoResult> UpdateEvento(int Id, AtualizarEventoRequest evento);
         Task<ExcluirEventoResult> DeleteEvento(int Id);
         Task<IEnumerable<EventoDto>> GetEventosByFilterAsync(string tema);
-        Task<IEnumerable<EventoDto>> GetAllEventosAsync();
+        Task<IEnumerable<EventoDto>> GetAllEventosAsync(long userId);
         Task<EventoDto> GetAllEventosByIdAsync(int Id);
         Task<IPagedCollection<EventoDto>> PesquisarEvento(PesquisarEventoFilterRequest filtro, PaginationRequest pagination);
         Task<SalvarEventoResult> DeletarImagem(int eventoId, string imagemPath);

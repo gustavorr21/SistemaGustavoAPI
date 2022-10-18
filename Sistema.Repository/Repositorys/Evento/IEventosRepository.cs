@@ -12,7 +12,7 @@ namespace Sistema.Repository.Repositorys.Evento
     public interface IEventoRepository
     {
         Task<ICollection<EventoOcorrido>> GetEventosByFilterAsync(string tema);
-        Task<IEnumerable<EventoOcorrido>> GetAllEventosAsync();
+        Task<IEnumerable<EventoOcorrido>> GetAllEventosAsync(long userId);
         Task<EventoOcorrido> GetAllEventosByIdAsync(int Id);
     }
 }

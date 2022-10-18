@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Linx.Infra.Data;
+using Sistema.Domain.Identity;
 
 namespace Sistema.Repository.Repositorys.Evento
 {
@@ -17,7 +18,7 @@ namespace Sistema.Repository.Repositorys.Evento
         {
             _context = context;
         }
-        public async Task<IEnumerable<EventoOcorrido>> GetAllEventosAsync()
+        public async Task<IEnumerable<EventoOcorrido>> GetAllEventosAsync(long userId)
         {
             IQueryable<EventoOcorrido> query =
                 _context.Eventos
@@ -26,6 +27,8 @@ namespace Sistema.Repository.Repositorys.Evento
                 .Include(e => e.PalestrantesEventos)
                     .ThenInclude(pe => pe.Palestrante)
                 .AsNoTracking();
+
+            query = query.Where(e => e.UserId == userId);
 
             query = query.OrderBy(e => e.Id);
 

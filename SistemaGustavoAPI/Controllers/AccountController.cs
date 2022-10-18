@@ -6,6 +6,7 @@ using Sistema.Application.Application.Token;
 using Sistema.Application.ApplicationDTO.Dtos;
 using Sistema.Application.ApplicationDTO.Requests;
 using Sistema.Application.ApplicationDTO.Result;
+using Sistema.Domain.Identity;
 using SistemaGustavoAPI.Extensions;
 using System;
 using System.Threading.Tasks;
@@ -49,7 +50,14 @@ namespace SistemaGustavoAPI.Controllers
                 if (await _accountService.UserExists(userRequest.User.UserName))
                     return BadRequest("Usuario já existente");
 
-                return Ok(await _accountService.CreateAccountAsync(userRequest.User));
+                var user = await _accountService.CreateAccountAsync(userRequest.User);
+                
+                return Ok(new
+                {
+                    userName = user.Result.UserName,
+                    primeiroNome = user.Result.PrimeiroNome,
+                    token = (await _tokenService.CreateToken(user.Result)).ToString()
+                });
             }
             catch (Exception ex)
             {
