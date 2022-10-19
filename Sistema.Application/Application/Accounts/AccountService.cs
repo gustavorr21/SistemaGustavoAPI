@@ -81,11 +81,24 @@ namespace Sistema.Application.Application.Accounts
             }
         }
 
+        public async Task<UserDto> GetUserByIdAsync(int userId)
+        {
+            try
+            {
+                return await _userRepository.GetUserByIdAsync(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao tentar pegar usuario por nome");
+
+            }
+        }
+
         public async Task<SalvarUsuarioResult> UpdateAccount(AtualizarUsuarioDtoRequest userUpdtateDto)
         {
             try
             {
-                User userUp = await _userRepository.GetUserByNameAsync(userUpdtateDto.User.UserName)
+                User userUp = await _userRepository.GetUserByIdAsync(userUpdtateDto.User.Id)
                    ?? throw new ObjectNotFoundException("Usuario não encontrado!");
 
                 var token = await _userManager.GeneratePasswordResetTokenAsync(userUp);
@@ -100,6 +113,7 @@ namespace Sistema.Application.Application.Accounts
                 userUp.AtualizarDescricao(userUpdtateDto.User.Descricao);
                 userUp.AtualizarTitulo(userUpdtateDto.User.Titulo);
                 userUp.AtualizarFuncao(userUpdtateDto.User.Funcao);
+                userUp.AtualizarTelefone(userUpdtateDto.User.PhoneNumber);
 
                 _userRepository.Update<User>(userUp);
 

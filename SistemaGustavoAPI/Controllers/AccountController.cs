@@ -32,8 +32,8 @@ namespace SistemaGustavoAPI.Controllers
         {
             try
             {
-                var userName = User.GetUserName();
-                return Ok(await _accountService.GetUserByNameAsync(userName));
+                var userId = User.GetUserId();
+                return Ok(await _accountService.GetUserByIdAsync(userId));
             }
             catch (Exception ex)
             {
@@ -75,7 +75,7 @@ namespace SistemaGustavoAPI.Controllers
                 if (user == null) return Unauthorized("Usuário invalido");
 
                 var result = await _accountService.CheckPasswordAsync(user, loginRequest.Password);
-                if (result == null) return Unauthorized("Usuário invalido");
+                if (!result.Succeeded) return Unauthorized("Usuário invalido");
 
                 return Ok(new { 
                     userName = user.UserName,

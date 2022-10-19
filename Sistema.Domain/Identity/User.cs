@@ -72,5 +72,9 @@ namespace Sistema.Domain.Identity
         {
             ImagemUrl = imagemUrl;
         }
+        public void AtualizarTelefone(string telefone)
+        {
+            PhoneNumber = telefone;
+        }
     }
 }
