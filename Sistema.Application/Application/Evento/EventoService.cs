@@ -34,7 +34,6 @@ namespace Sistema.Application.Application.Evento
         {
             try
             {
-
                 Lote eventoLote;
                 var newEvento = new EventoOcorrido(evento.Evento.Local,
                                               evento.Evento.Tema,

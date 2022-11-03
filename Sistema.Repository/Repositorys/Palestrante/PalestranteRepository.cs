@@ -45,7 +45,7 @@ namespace Sistema.Repository.Repositorys.Palestrante
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<ICollection<Domain.Models.Palestrante>> GetPalestranteByFilterAsync(string nome)
+        public async Task<ICollection<Domain.Models.Palestrante>> GetPalestranteByFilterAsync(string nome, long userId)
         {
             IQueryable<Domain.Models.Palestrante> query =
              _context.Palestrantes
@@ -57,16 +57,12 @@ namespace Sistema.Repository.Repositorys.Palestrante
             if (nome != null)
                 query = query.Where(e => e.Nome.ToLower().Contains(nome.ToLower()));
 
+            if (userId != null)
+                query = query.Where(e => e.UserId == userId);
+
             query = query.OrderBy(e => e.Id);
 
             return await query.ToListAsync();
         }
-
-        public async Task<bool> SaveChangesAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-
     }
 }

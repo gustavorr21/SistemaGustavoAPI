@@ -101,9 +101,10 @@ namespace Sistema.Application.Application.Accounts
                 User userUp = await _userRepository.GetUserByIdAsync(userUpdtateDto.User.Id)
                    ?? throw new ObjectNotFoundException("Usuario não encontrado!");
 
-                var token = await _userManager.GeneratePasswordResetTokenAsync(userUp);
-
-                var result = await _userManager.ResetPasswordAsync(userUp, token, userUpdtateDto.User.Password);
+                if (userUpdtateDto.User.Password != null) { 
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(userUp);
+                    var result = await _userManager.ResetPasswordAsync(userUp, token, userUpdtateDto.User.Password);
+                }
 
                 //este serve como base, so ir implementando
                 userUp.AtualizarPrimeiroNome(userUpdtateDto.User.PrimeiroNome);
